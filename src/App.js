@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Jobs from './pages/Jobs';
 import ResumeAnalyzer from './pages/ResumeAnalyzer';
+import AiJobFinder from './pages/AiJobFinder';
 import Profile from './pages/Profile';
 
 function PrivateRoute({ children }) {
@@ -39,6 +40,7 @@ function AppRoutes() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="jobs" element={<Jobs />} />
         <Route path="resume" element={<ResumeAnalyzer />} />
+        <Route path="ai-search" element={<AiJobFinder />} />
         <Route path="profile" element={<Profile />} />
       </Route>
     </Routes>
