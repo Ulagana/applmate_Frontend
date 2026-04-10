@@ -3,21 +3,23 @@ import { Search, Loader2, Sparkles, MapPin, Briefcase } from 'lucide-react';
 import { useNotification } from '../context/NotificationContext';
 
 export default function AiJobFinder() {
-  const [query, setQuery] = useState('');
+  const [role, setRole] = useState('');
+  const [location, setLocation] = useState('');
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState(null);
   const { notify } = useNotification();
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!query.trim()) {
-      notify('error', 'Please enter a role or keywords to search');
+    if (!role.trim() || !location.trim()) {
+      notify('error', 'Please enter both a role and a location');
       return;
     }
 
     setSearching(true);
     try {
       const token = localStorage.getItem('applymate_token');
+      const query = `Role: ${role}, Location: ${location}`;
       const res = await fetch((process.env.REACT_APP_API_URL || 'https://applmate-backend.onrender.com/api') + '/ai/job-search', {
         method: 'POST',
         headers: {
@@ -51,26 +53,38 @@ export default function AiJobFinder() {
           AI Job Finder
         </h2>
         <p className="text-sm text-dark-300">
-          Describe the exact job you're looking for. Our AI will search and generate direct daily job posting links, LinkedIn search queries, and customized strategies based on your skillset.
+          Describe the exact role and location you're looking for. Our AI will search and generate daily job posting links and customized strategies.
         </p>
       </div>
 
       <div className="glass-card p-6">
-        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-400" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="e.g. Remote React Developer jobs in Europe..."
-              className="w-full bg-dark-800 border border-dark-600 rounded-xl py-3 pl-10 pr-4 text-white placeholder-dark-400 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors"
-            />
+        <form onSubmit={handleSearch} className="flex flex-col gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-400" />
+              <input
+                type="text"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                placeholder="e.g. React Developer..."
+                className="w-full bg-dark-800 border border-dark-600 rounded-xl py-3 pl-10 pr-4 text-white placeholder-dark-400 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors"
+              />
+            </div>
+            <div className="flex-1 relative">
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-400" />
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="e.g. Remote, Europe, or New York..."
+                className="w-full bg-dark-800 border border-dark-600 rounded-xl py-3 pl-10 pr-4 text-white placeholder-dark-400 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors"
+              />
+            </div>
           </div>
           <button
             type="submit"
-            disabled={searching || !query}
-            className="btn-primary py-3 px-8 justify-center whitespace-nowrap"
+            disabled={searching || !role || !location}
+            className="btn-primary py-3 px-8 justify-center whitespace-nowrap self-end"
           >
             {searching ? (
               <><Loader2 className="w-5 h-5 animate-spin" /> Searching...</>
