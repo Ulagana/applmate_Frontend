@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Mail, Lock, Save, Loader2, Camera } from 'lucide-react';
+import { User, Mail, Lock, Save, Loader2, Camera, Key, Copy, CheckCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
 import api from '../utils/api';
@@ -16,6 +16,17 @@ export default function Profile() {
   const [passwords, setPasswords] = useState({ current: '', newPass: '', confirm: '' });
   const [savingProfile, setSavingProfile] = useState(false);
   const [savingPass, setSavingPass] = useState(false);
+  const [tokenCopied, setTokenCopied] = useState(false);
+
+  const token = localStorage.getItem('token') || '';
+
+  const handleCopyToken = () => {
+    if (!token) return;
+    navigator.clipboard.writeText(token).then(() => {
+      setTokenCopied(true);
+      setTimeout(() => setTokenCopied(false), 2500);
+    });
+  };
 
   const handleProfile = async (e) => {
     e.preventDefault();
@@ -254,6 +265,38 @@ export default function Profile() {
               </button>
             </div>
           </form>
+        </div>
+
+        {/* Chrome Extension Token Card */}
+        <div className="glass-card p-8 relative overflow-hidden border border-indigo-500/20 bg-indigo-500/5">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+          <h2 className="text-lg font-bold text-white mb-1 flex items-center gap-3 relative z-10">
+            <Key className="w-5 h-5 text-indigo-400" />
+            Chrome Extension Token
+          </h2>
+          <p className="text-sm text-dark-400 mb-5 relative z-10">
+            Use this token to connect the <span className="text-indigo-400 font-semibold">ApplyMate Chrome Extension</span> to your account for 1-click job autofill.
+          </p>
+          
+          <div className="flex gap-2 items-center relative z-10">
+            <div className="flex-1 bg-dark-900 border border-dark-600 rounded-xl py-2.5 px-4 font-mono text-xs text-dark-300 truncate">
+              {token ? `${token.slice(0, 32)}...` : 'No token found — please log in again.'}
+            </div>
+            <button
+              onClick={handleCopyToken}
+              disabled={!token}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm transition-colors shadow-lg shadow-indigo-500/20 shrink-0"
+            >
+              {tokenCopied ? (
+                <><CheckCheck className="w-4 h-4" /> Copied!</>
+              ) : (
+                <><Copy className="w-4 h-4" /> Copy Token</>
+              )}
+            </button>
+          </div>
+          <p className="text-[10px] text-dark-500 mt-3 relative z-10">
+            ⚠️ Keep this token private. It grants access to your ApplyMate profile data.
+          </p>
         </div>
 
       </div>
