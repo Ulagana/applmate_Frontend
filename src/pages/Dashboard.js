@@ -268,7 +268,7 @@ export default function Dashboard() {
           <div className="flex-1 overflow-y-auto pr-1">
             {newsLoading ? (
               <div className="flex flex-col items-center justify-center h-full space-y-3 py-10 text-dark-400">
-                <Spinner className="w-6 h-6 animate-spin text-primary-500" />
+                <div className="w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
                 <p className="text-sm">Fetching market updates...</p>
               </div>
             ) : news.length > 0 ? (
