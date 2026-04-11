@@ -160,15 +160,14 @@ export default function ResumeAnalyzer() {
       const reader = new FileReader();
       reader.onload = (ev) => {
         setResumeText(ev.target.result);
-        notify('info', 'Resume loaded (text mode). For PDF parsing, connect the backend.');
+        notify('success', 'Resume parsed successfully!');
+        setUploading(false);
       };
       reader.readAsText(file);
     } else {
-      // Simulate PDF extraction for demo
-      setResumeText('Frontend Developer\nReact JavaScript TypeScript Node.js Express REST API\nGit Docker Agile ' +
-        '3 years experience building scalable web applications\nLed development of customer-facing dashboard reducing load time by 40%\n' +
-        'AWS Lambda MongoDB PostgreSQL Redis\nCommunication problem-solving leadership team collaboration');
-      notify('info', 'PDF text extracted (demo mode). Backend PDF parser unlocks full extraction.');
+      notify('error', 'Failed to parse PDF. Please ensure the connection to the backend is active.');
+      setFileName('');
+      setUploading(false);
     }
     setUploading(false);
   };
