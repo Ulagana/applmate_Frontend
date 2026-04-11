@@ -11,6 +11,7 @@ export default function Profile() {
     name: user?.name || '',
     email: user?.email || '',
     bio: user?.bio || '',
+    profilePic: user?.profilePic || '',
   });
   const [passwords, setPasswords] = useState({ current: '', newPass: '', confirm: '' });
   const [savingProfile, setSavingProfile] = useState(false);
@@ -28,6 +29,22 @@ export default function Profile() {
     } finally {
       setSavingProfile(false);
     }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      notify('error', 'Image must be under 2MB, try a smaller file.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setForm(prev => ({ ...prev, profilePic: ev.target.result }));
+    };
+    reader.readAsDataURL(file);
   };
 
   const handlePassword = async (e) => {
@@ -70,11 +87,25 @@ export default function Profile() {
               <div className="relative group cursor-pointer">
                 <div className="w-24 h-24 rounded-full bg-dark-900 border-4 border-dark-950 flex items-center justify-center overflow-hidden shadow-2xl relative z-10">
                   <div className="absolute inset-0 bg-primary-500/10 group-hover:bg-primary-500/20 transition-colors"></div>
-                  <span className="text-3xl font-extrabold bg-gradient-to-br from-white to-primary-200 bg-clip-text text-transparent">{initials}</span>
+                  {form.profilePic ? (
+                    <img src={form.profilePic} alt="Profile" className="w-full h-full object-cover relative z-10" />
+                  ) : (
+                    <span className="text-3xl font-extrabold bg-gradient-to-br from-white to-primary-200 bg-clip-text text-transparent relative z-10">{initials}</span>
+                  )}
                 </div>
-                <button className="absolute bottom-0 right-0 w-8 h-8 bg-primary-500 hover:bg-primary-400 text-white rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 border-2 border-dark-950 z-20">
+                <input 
+                  type="file" 
+                  accept="image/png, image/jpeg, image/jpg, image/webp" 
+                  id="profilePicUpload" 
+                  className="hidden" 
+                  onChange={handleImageUpload} 
+                />
+                <label 
+                  htmlFor="profilePicUpload"
+                  className="absolute bottom-0 right-0 w-8 h-8 bg-primary-500 hover:bg-primary-400 text-white rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 border-2 border-dark-950 z-20 cursor-pointer"
+                >
                   <Camera className="w-4 h-4" />
-                </button>
+                </label>
               </div>
             </div>
           </div>
