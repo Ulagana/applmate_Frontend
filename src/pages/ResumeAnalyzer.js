@@ -184,47 +184,24 @@ export default function ResumeAnalyzer() {
     }
     setAnalyzing(true);
     
-    try {
-      // We will lazily import or use the global fetch with token
-      const token = localStorage.getItem('applymate_token');
-      const res = await fetch((process.env.REACT_APP_API_URL || 'https://applmate-backend.onrender.com/api') + '/resume/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ resumeText, jobDesc })
-      });
-
-      const data = await res.json();
-      
-      if (!res.ok) {
-        notify('error', data.message || 'Failed to analyze resume');
-        setAnalyzing(false);
-        return;
-      }
-
-      setResult(data.result);
-      notify('success', `Analysis complete! You have ${data.remainingCredits} AI tokens remaining.`);
-    } catch (err) {
-      // Fallback to local analysis if backend fails
-      notify('error', 'Server error. Falling back to local analysis.');
-      const localResult = analyzeMatch(resumeText, jobDesc);
-      setResult(localResult);
-    }
+    // Simulate async analysis to give visual feedback
+    await new Promise(r => setTimeout(r, 1500));
+    const localResult = analyzeMatch(resumeText, jobDesc);
+    setResult(localResult);
     
+    notify('success', 'Analysis complete!');
     setAnalyzing(false);
   };
 
   return (
     <div className="space-y-6 animate-slide-up">
       {/* AI Notice Banner */}
-      <div className="glass-card p-4 flex items-center gap-3 border-primary-500/20 bg-primary-500/5">
-        <Lightbulb className="w-5 h-5 text-primary-400 shrink-0" />
+      <div className="glass-card p-4 flex items-center gap-3 border-yellow-500/20 bg-yellow-500/5">
+        <Lock className="w-5 h-5 text-yellow-400 shrink-0" />
         <div>
-          <p className="text-sm font-medium text-primary-300">Kimi AI Analysis Active 🤖</p>
+          <p className="text-sm font-medium text-yellow-300">AI Analysis Mode — Rule-based</p>
           <p className="text-xs text-dark-400">
-            Powered by Moonshot Kimi AI. You have 5 free AI analysis tokens available to deeply analyze your resume against the job description!
+            Currently using local keyword-matching engine.
           </p>
         </div>
       </div>
