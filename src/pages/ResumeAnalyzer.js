@@ -186,6 +186,14 @@ export default function ResumeAnalyzer() {
     setAnalyzing(false);
   };
 
+  const handleClear = () => {
+    setResumeText('');
+    setJobDesc('');
+    setFileName('');
+    setResult(null);
+    notify('info', 'Inputs and results cleared.');
+  };
+
   return (
     <div className="space-y-6 animate-slide-up">
       {/* AI Notice Banner */}
@@ -266,17 +274,25 @@ export default function ResumeAnalyzer() {
             />
           </div>
 
-          <button
-            onClick={handleAnalyze}
-            disabled={analyzing || !resumeText || !jobDesc}
-            className="btn-primary w-full justify-center py-3 text-base font-semibold shadow-lg shadow-primary-600/20"
-          >
-            {analyzing ? (
-              <><Loader2 className="w-4 h-4 animate-spin" /> Analyzing...</>
-            ) : (
-              <><ChevronRight className="w-4 h-4" /> Analyze Resume</>
-            )}
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={handleClear}
+              className="px-6 py-3 font-semibold border border-dark-600 rounded-xl text-dark-300 hover:bg-dark-800 hover:text-white transition-colors"
+            >
+              Clear
+            </button>
+            <button
+              onClick={handleAnalyze}
+              disabled={analyzing || !resumeText || !jobDesc}
+              className="btn-primary flex-1 justify-center py-3 text-base font-semibold shadow-lg shadow-primary-600/20"
+            >
+              {analyzing ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Analyzing...</>
+              ) : (
+                <><ChevronRight className="w-4 h-4" /> Analyze Resume</>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Right: Results */}
