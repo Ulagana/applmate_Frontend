@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -23,11 +23,16 @@ export default function Sidebar({ isOpen, onClose }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    if (window.confirm("Are you sure you want to log out of your ApplyMate account?")) {
-      logout();
-      navigate('/login');
-    }
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const confirmLogout = () => {
+    setShowLogoutModal(false);
+    logout();
+    navigate('/login');
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
   };
 
   return (
@@ -113,13 +118,45 @@ export default function Sidebar({ isOpen, onClose }) {
           </div>
         </div>
         <button
-          onClick={handleLogout}
+          onClick={handleLogoutClick}
           className="nav-item w-full text-red-400 hover:text-red-300 hover:bg-red-500/10"
         >
           <LogOut className="w-4 h-4 shrink-0" />
           <span>Sign Out</span>
         </button>
       </div>
+
+      {showLogoutModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-dark-950/80 backdrop-blur-sm transition-opacity" 
+            onClick={() => setShowLogoutModal(false)}
+          ></div>
+          <div className="glass-card w-full max-w-sm p-6 relative z-10 animate-slide-up border border-red-500/20 bg-dark-900 shadow-2xl shadow-red-500/10">
+            <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-4 border border-red-500/20">
+              <LogOut className="w-6 h-6 text-red-400" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Sign Out</h3>
+            <p className="text-sm text-dark-300 mb-6 leading-relaxed">
+              Are you sure you want to log out of your ApplyMate account? You will need to sign back in to access your data.
+            </p>
+            <div className="flex items-center gap-3 w-full">
+              <button 
+                onClick={() => setShowLogoutModal(false)}
+                className="flex-1 py-2.5 rounded-xl border border-dark-600 text-dark-200 font-medium hover:bg-dark-700 hover:text-white transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmLogout}
+                className="flex-1 py-2.5 rounded-xl bg-red-500/10 text-red-400 font-semibold hover:bg-red-500/20 border border-red-500/30 transition-colors"
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 }
