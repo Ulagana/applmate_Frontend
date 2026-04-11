@@ -24,8 +24,10 @@ export default function Sidebar({ isOpen, onClose }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    navigate('/login');
+    if (window.confirm("Are you sure you want to log out of your ApplyMate account?")) {
+      logout();
+      navigate('/login');
+    }
   };
 
   return (
