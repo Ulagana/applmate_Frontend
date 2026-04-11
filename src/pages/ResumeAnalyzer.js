@@ -139,7 +139,7 @@ export default function ResumeAnalyzer() {
       const formData = new FormData();
       formData.append('resume', file);
       const res = await fetch(
-        (process.env.REACT_APP_API_URL || 'http://localhost:5000/api') + '/resume/extract',
+        (process.env.REACT_APP_API_URL || 'https://applmate-backend.onrender.com/api') + '/resume/extract',
         {
           method: 'POST',
           headers: { Authorization: `Bearer ${localStorage.getItem('applymate_token')}` },
