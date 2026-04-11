@@ -245,17 +245,6 @@ export default function ResumeAnalyzer() {
               />
             </label>
 
-            {/* Manual text fallback */}
-            <div className="mt-4">
-              <label className="label">Or paste resume text</label>
-              <textarea
-                value={resumeText}
-                onChange={e => setResumeText(e.target.value)}
-                rows={6}
-                placeholder="Paste your resume content here..."
-                className="input-field resize-none text-sm"
-              />
-            </div>
           </div>
 
           {/* Job Description */}
