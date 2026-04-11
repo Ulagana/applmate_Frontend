@@ -8,6 +8,7 @@ import {
   LogOut,
   Zap,
   X,
+  Map
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -16,6 +17,7 @@ const navItems = [
   { to: '/jobs', icon: Briefcase, label: 'Jobs' },
   { to: '/resume', icon: FileText, label: 'Resume Analyzer' },
   { to: '/ai-search', icon: Zap, label: 'AI Job Finder' },
+  { to: '/upcoming', icon: Map, label: 'Upcoming Features' },
   { to: '/profile', icon: User, label: 'Profile' },
 ];
 
