@@ -79,28 +79,7 @@ export default function Sidebar({ isOpen, onClose }) {
         ))}
       </nav>
 
-      {/* AI Info Block */}
-      <div className="px-4 py-2 mt-auto">
-        <div className="bg-primary-900/40 border border-primary-500/20 rounded-xl p-3">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-primary-300 flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5" /> AI Analysis
-            </span>
-            <span className="text-xs font-bold text-white px-2 py-0.5 bg-primary-500/20 rounded border border-primary-500/30">
-              {user?.aiCredits !== undefined ? user.aiCredits : 5} Left
-            </span>
-          </div>
-          <div className="w-full bg-dark-700 h-1.5 rounded-full overflow-hidden mb-2">
-            <div 
-              className="bg-primary-500 h-full rounded-full transition-all"
-              style={{ width: `${((user?.aiCredits !== undefined ? user.aiCredits : 5) / 5) * 100}%` }}
-            />
-          </div>
-          <p className="text-[10px] text-primary-400/80 leading-tight">
-            You get 5 AI resume analyses. Automatically refills every 24 hours!
-          </p>
-        </div>
-      </div>
+      {/* AI Info Block Hidden per user request */}
 
       {/* User + Logout */}
       <div className="p-4 border-t border-dark-700/50 mt-4">
