@@ -4,6 +4,7 @@ import {
   ChevronRight, Loader2, BarChart2, Tag, Lightbulb, Lock
 } from 'lucide-react';
 import { useNotification } from '../context/NotificationContext';
+import api from '../utils/api';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -138,20 +139,13 @@ export default function ResumeAnalyzer() {
       // Try backend upload first
       const formData = new FormData();
       formData.append('resume', file);
-      const res = await fetch(
-        (process.env.REACT_APP_API_URL || 'https://applmate-backend.onrender.com/api') + '/resume/extract',
-        {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${localStorage.getItem('applymate_token')}` },
-          body: formData,
-        }
-      );
-      if (res.ok) {
-        const data = await res.json();
-        setResumeText(data.text || '');
-        notify('success', 'Resume parsed successfully!');
-        return;
-      }
+      const res = await api.post('/resume/extract', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      
+      setResumeText(res.data.text || '');
+      notify('success', 'Resume parsed successfully!');
+      return;
     } catch {
       // Fall back to reading TXT client-side
     }

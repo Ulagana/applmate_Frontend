@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Loader2, Sparkles, MapPin, Briefcase } from 'lucide-react';
 import { useNotification } from '../context/NotificationContext';
+import api from '../utils/api';
 
 export default function AiJobFinder() {
   const [role, setRole] = useState('');
@@ -18,29 +19,13 @@ export default function AiJobFinder() {
 
     setSearching(true);
     try {
-      const token = localStorage.getItem('applymate_token');
       const query = `Role: ${role}, Location: ${location}`;
-      const res = await fetch((process.env.REACT_APP_API_URL || 'https://applmate-backend.onrender.com/api') + '/ai/job-search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ query })
-      });
-
-      const data = await res.json();
+      const res = await api.post('/ai/job-search', { query });
       
-      if (!res.ok) {
-        notify('error', data.message || 'Search failed');
-        setSearching(false);
-        return;
-      }
-
-      setResults(data.result);
-      notify('success', `Found job strategies! You have ${data.remainingCredits} AI tokens remaining.`);
+      setResults(res.data.result);
+      notify('success', `Found job strategies! You have ${res.data.remainingCredits} AI tokens remaining.`);
     } catch (err) {
-      notify('error', 'Network error or server is down.');
+      notify('error', err.message || 'Network error or server is down.');
     }
     setSearching(false);
   };
