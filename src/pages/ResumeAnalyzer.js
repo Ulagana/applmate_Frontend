@@ -244,6 +244,17 @@ export default function ResumeAnalyzer() {
               />
             </label>
 
+            {/* Extracted / Manual Text Content */}
+            <div className="mt-5">
+              <label className="text-sm font-medium text-dark-200 mb-2 block">Extracted Resume Content (Edit if necessary)</label>
+              <textarea
+                value={resumeText}
+                onChange={e => setResumeText(e.target.value)}
+                rows={6}
+                placeholder="Upload a file above, or manually paste your resume text here to pre-fill it..."
+                className="w-full bg-dark-800/50 border border-dark-600 rounded-xl p-3 text-white placeholder-dark-400 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors text-sm resize-none"
+              />
+            </div>
           </div>
 
           {/* Job Description */}
