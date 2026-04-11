@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { User, Mail, Lock, Save, Loader2, Camera, Key, Copy, CheckCheck } from 'lucide-react';
+import { User, Mail, Lock, Save, Loader2, Camera, Key, Copy, CheckCheck, ExternalLink } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
 import api from '../utils/api';
 
 export default function Profile() {
-  const { user, updateUser } = useAuth();
+  const { user, token, updateUser } = useAuth();
   const { notify } = useNotification();
   const [form, setForm] = useState({
     name: user?.name || '',
@@ -17,8 +17,6 @@ export default function Profile() {
   const [savingProfile, setSavingProfile] = useState(false);
   const [savingPass, setSavingPass] = useState(false);
   const [tokenCopied, setTokenCopied] = useState(false);
-
-  const token = localStorage.getItem('token') || '';
 
   const handleCopyToken = () => {
     if (!token) return;
@@ -275,12 +273,12 @@ export default function Profile() {
             Chrome Extension Token
           </h2>
           <p className="text-sm text-dark-400 mb-5 relative z-10">
-            Use this token to connect the <span className="text-indigo-400 font-semibold">ApplyMate Chrome Extension</span> to your account for 1-click job autofill.
+            Copy this token and paste it into the <span className="text-indigo-400 font-semibold">ApplyMate Chrome Extension</span> to enable 1-click job autofill.
           </p>
-          
-          <div className="flex gap-2 items-center relative z-10">
-            <div className="flex-1 bg-dark-900 border border-dark-600 rounded-xl py-2.5 px-4 font-mono text-xs text-dark-300 truncate">
-              {token ? `${token.slice(0, 32)}...` : 'No token found — please log in again.'}
+
+          <div className="flex gap-2 items-center relative z-10 mb-3">
+            <div className="flex-1 bg-dark-900 border border-dark-600 rounded-xl py-2.5 px-4 font-mono text-xs text-dark-300 truncate select-all cursor-text">
+              {token ? `${token.slice(0, 40)}...` : '⚠ Not available — please log out and log in again.'}
             </div>
             <button
               onClick={handleCopyToken}
@@ -290,12 +288,21 @@ export default function Profile() {
               {tokenCopied ? (
                 <><CheckCheck className="w-4 h-4" /> Copied!</>
               ) : (
-                <><Copy className="w-4 h-4" /> Copy Token</>
+                <><Copy className="w-4 h-4" /> Copy</>
               )}
             </button>
           </div>
+
+          <button
+            onClick={() => window.open('chrome://extensions', '_blank')}
+            className="flex items-center gap-2 text-xs text-indigo-400 hover:text-indigo-300 transition-colors font-semibold relative z-10"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            Open Chrome Extensions Page
+          </button>
+
           <p className="text-[10px] text-dark-500 mt-3 relative z-10">
-            ⚠️ Keep this token private. It grants access to your ApplyMate profile data.
+            ⚠️ Keep this token private. It grants full access to your ApplyMate account.
           </p>
         </div>
 
