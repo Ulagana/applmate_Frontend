@@ -145,6 +145,7 @@ export default function ResumeAnalyzer() {
       
       setResumeText(res.data.text || '');
       notify('success', 'Resume parsed successfully!');
+      setUploading(false);
       return;
     } catch {
       // Fall back to reading TXT client-side
