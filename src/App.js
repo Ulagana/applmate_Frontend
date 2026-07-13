@@ -11,6 +11,7 @@ import ResumeAnalyzer from './pages/ResumeAnalyzer';
 import AiJobFinder from './pages/AiJobFinder';
 import Profile from './pages/Profile';
 import Upcoming from './pages/Upcoming';
+import ExtensionSetup from './pages/ExtensionSetup';
 
 function PrivateRoute({ children }) {
   const { token } = useAuth();
@@ -44,6 +45,7 @@ function AppRoutes() {
         <Route path="ai-search" element={<AiJobFinder />} />
         <Route path="profile" element={<Profile />} />
         <Route path="upcoming" element={<Upcoming />} />
+        <Route path="extension-setup" element={<ExtensionSetup />} />
       </Route>
     </Routes>
   );
